@@ -65,8 +65,8 @@ ServerMain::ServerMain( QObject* parent) :
     }
 
     /// Error log from Arn system
-    Arn::setConsoleError( false);
-    connect( &Arn::getInstance(), SIGNAL(errorLogSig(QString,uint,void*)),
+    ArnM::setConsoleError( false);
+    connect( &ArnM::getInstance(), SIGNAL(errorLogSig(QString,uint,void*)),
              this, SLOT(errorLog(QString)));
 
     _linuxSignal = new LinuxSignal( this);
