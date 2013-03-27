@@ -26,3 +26,6 @@ LIBS += -lArn
 # ########
 target.path = /usr/local/house
 INSTALLS += target
+
+OTHER_FILES += \
+    README.md
