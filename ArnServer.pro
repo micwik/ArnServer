@@ -8,15 +8,15 @@ CONFIG -= app_bundle
 TEMPLATE = app
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
-SOURCES += main.cpp \
-    ServerMain.cpp \
-    LinuxSignal.cpp \
-    qgetopt.cpp \
-    VcsGit.cpp
-HEADERS += ServerMain.hpp \
-    LinuxSignal.hpp \
-    qgetopt.h \
-    VcsGit.hpp
+SOURCES += src/main.cpp \
+    src/ServerMain.cpp \
+    src/LinuxSignal.cpp \
+    src/qgetopt.cpp \
+    src/VcsGit.cpp
+HEADERS += src/ServerMain.hpp \
+    src/LinuxSignal.hpp \
+    src/qgetopt.h \
+    src/VcsGit.hpp
 #INCLUDEPATH += ../ArnLib
 #LIBS += ../ArnLib/libArn.a
 LIBS += -lArn
@@ -26,8 +26,3 @@ LIBS += -lArn
 # ########
 target.path = /usr/local/house
 INSTALLS += target
-
-
-
-
-
