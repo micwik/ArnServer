@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Arnserver by micwik</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/micwik/ArnServer">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Arnserver</h1>
+            <h2>Active Registry Network Server - Reference generic server</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/micwik/ArnServer/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/micwik/ArnServer/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <pre><code>Copyright (C) 2010-2013 Michael Wiklund.
+All rights reserved.
+Contact: arnlib@wiklunden.se
+</code></pre>
+
+<h1>ArnServer - Active Registry Network Server.</h1>
+
+<p>This Qt and ArnLib based program implements a generic Arn Server.
+When this neutral server is used as is, all custom Arn Data Objects are created in the
+connecting clients as well as all custom logic.
+The server then only works as a central connection point and provides some general
+services like <em>Persistance</em>.</p>
+
+<p><a href="https://github.com/micwik/ArnServer/wiki/Home">ArnServer wiki</a></p>
+
+<h2>Main features</h2>
+
+<ul>
+<li><p>Based on QT, multiple platform and OS support.</p></li>
+<li><p>Arn Server central connection point. Neutral without custom objects or logic.</p></li>
+<li><p>Persistent storage of objects in SQLight and in files.</p></li>
+<li><p>Version Control System (VCS) using <em>git</em> for objects stored in files.</p></li>
+<li><p>Automatic archiving of SQLight DB each 24 hour.</p></li>
+<li><p>Linux signal (HUP, TERM, INT) handling.</p></li>
+</ul>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/micwik">micwik</a> can be found on <a href="https://github.com/micwik/ArnServer">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
