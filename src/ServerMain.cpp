@@ -69,19 +69,19 @@ ServerMain::ServerMain( QObject* parent) :
     connect( &ArnM::getInstance(), SIGNAL(errorLogSig(QString,uint,void*)),
              this, SLOT(errorLog(QString)));
 
-    _linuxSignal = new LinuxSignal( this);
     QCoreApplication*  app = QCoreApplication::instance();
+#ifndef WIN32
+    _linuxSignal = new LinuxSignal( this);
     connect( _linuxSignal, SIGNAL(sigInt()),  app, SLOT(quit()));
     connect( _linuxSignal, SIGNAL(sigTerm()), app, SLOT(quit()));
+#else
+    _linuxSignal = 0;
+#endif
     connect( app, SIGNAL(aboutToQuit()), this, SLOT(doAboutToQuit()));
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->start();
 
-    _git = new VcsGit( this);
-    _git->setGitExePath("/usr/bin/git");
-    // _git->setUserSettings("Arn Magnusson", "arn.magnusson@arnnas.se");
-    _git->setWorkingDir(dataDir.absoluteFilePath("persist"));
     qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
 
     _persist = new ArnPersist( this);
@@ -90,7 +90,16 @@ ServerMain::ServerMain( QObject* parent) :
     _persist->setArchiveDir( dataDir.absoluteFilePath("archive"));
     _persist->setPersistDir( dataDir.absoluteFilePath("persist"));
     _persist->setMountPoint("/");
+
+#ifndef WIN32
+    _git = new VcsGit( this);
+    _git->setGitExePath("/usr/bin/git");
+    // _git->setUserSettings("Arn Magnusson", "arn.magnusson@arnnas.se");
+    _git->setWorkingDir(dataDir.absoluteFilePath("persist"));
     _persist->setVcs( _git);
+#else
+    _git = 0;
+#endif
 
     _archiveTimer.start(24 * 3600 * 1000);
     connect( &_archiveTimer, SIGNAL(timeout()), _persist, SLOT(doArchive()));

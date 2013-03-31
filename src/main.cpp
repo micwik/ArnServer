@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
     qDebug() << "CWD=" << QDir::currentPath();
     new ServerMain;
 
+#ifndef WIN32
     LinuxSignal::setupLinuxSignalHandlers();
+#endif
     return a.exec();
 }
