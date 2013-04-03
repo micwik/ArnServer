@@ -5,10 +5,17 @@
 # ArnServer - Active Registry Network Server.
 
 This Qt and ArnLib based program implements a generic Arn Server.
-When this neutral server is used as is, all custom Arn Data Objects are created in the
+When this neutral server is used _as is_, all custom Arn Data Objects are created in the
 connecting clients as well as all custom logic.
 The server then only works as a central connection point and provides some general
 services like _Persistance_.
+<Br><Br>
+
+
+## Installation and usage
+
+Read [Install.md](Install.md) how to build, install and use.
+<Br><Br>
 
 
 ## Main features
