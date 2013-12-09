@@ -41,12 +41,14 @@ int main(int argc, char *argv[])
     // QCoreApplication a(argc, argv);
     QApplication a(argc, argv, false);
 
-    qDebug() << "Startar Arn Server ...";
+    qDebug() << "Starting Arn Server ...";
     qDebug() << "CWD=" << QDir::currentPath();
-    new ServerMain;
+    ServerMain sm;
 
 #ifndef WIN32
     LinuxSignal::setupLinuxSignalHandlers();
 #endif
-    return a.exec();
+    int  stat = a.exec();
+    qDebug() << "Ended Arn Server ...";
+    return stat;
 }

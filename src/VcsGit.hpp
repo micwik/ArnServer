@@ -39,8 +39,8 @@
 #ifndef VCSGIT_HPP
 #define VCSGIT_HPP
 
-#include <ArnLib/ArnPersist.hpp>
-#include <ArnLib/ArnLink.hpp>
+#include <ArnPersist.hpp>
+#include <ArnLink.hpp>
 #include <QProcess>
 
 

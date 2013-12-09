@@ -72,8 +72,8 @@ ServerMain::ServerMain( QObject* parent) :
     QCoreApplication*  app = QCoreApplication::instance();
 #ifndef WIN32
     _linuxSignal = new LinuxSignal( this);
-    connect( _linuxSignal, SIGNAL(sigInt()),  app, SLOT(quit()));
-    connect( _linuxSignal, SIGNAL(sigTerm()), app, SLOT(quit()));
+    connect( _linuxSignal, SIGNAL(sigInt()),  this, SLOT(doShutDown()));
+    connect( _linuxSignal, SIGNAL(sigTerm()), this, SLOT(doShutDown()));
 #else
     _linuxSignal = 0;
 #endif
@@ -81,6 +81,9 @@ ServerMain::ServerMain( QObject* parent) :
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->start();
+
+    _discoverAdvert = new ArnDiscoverAdvertise( this);
+    _discoverAdvert->setArnServer( _server);
 
     qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
 
@@ -103,6 +106,22 @@ ServerMain::ServerMain( QObject* parent) :
 
     _archiveTimer.start(24 * 3600 * 1000);
     connect( &_archiveTimer, SIGNAL(timeout()), _persist, SLOT(doArchive()));
+}
+
+
+ServerMain::~ServerMain()
+{
+}
+
+
+void ServerMain::doShutDown()
+{
+    delete _discoverAdvert;
+    delete _git;
+    delete _persist;
+    delete _server;
+
+    QCoreApplication::instance()->quit();
 }
 
 

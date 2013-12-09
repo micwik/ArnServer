@@ -1,6 +1,9 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-09-23T21:35:29
 # -------------------------------------------------
+
+CONFIG += ArnLibCompile
+
 QT += network
 TARGET = ArnServer
 CONFIG += console
@@ -22,11 +25,19 @@ HEADERS += src/LinuxSignal.hpp \
     src/VcsGit.hpp
 }
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -lArn
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn
-else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn
+INCLUDEPATH += src $$PWD/../include
 
-INCLUDEPATH += src $$PWD/.. $$PWD/../include
+ArnLibCompile {
+    ARN += server
+    ARN += zeroconf
+    CONFIG += mDnsIntern
+    include(../ArnLib/src/ArnLib.pri)
+    INCLUDEPATH += $$PWD/../ArnLib/src
+} else {
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -lArn
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn
+    else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn
+}
 
 
 ### Install

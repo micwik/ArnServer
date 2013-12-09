@@ -35,9 +35,10 @@
 
 #include "LinuxSignal.hpp"
 #include "VcsGit.hpp"
-#include "ArnLib/Arn.hpp"
-#include <ArnLib/ArnPersist.hpp>
-#include <ArnLib/ArnServer.hpp>
+#include <Arn.hpp>
+#include <ArnDiscover.hpp>
+#include <ArnPersist.hpp>
+#include <ArnServer.hpp>
 #include <QTimer>
 #include <QObject>
 
@@ -47,6 +48,7 @@ class ServerMain : public QObject
 Q_OBJECT
 public:
     explicit ServerMain( QObject* parent = 0);
+    ~ServerMain();
 
 signals:
 
@@ -54,13 +56,15 @@ public slots:
 
 private slots:
     void  errorLog( QString errText);
+    void  doShutDown();
     void  doAboutToQuit();
 
 private:
-    ArnServer  *_server;
-    ArnPersist  *_persist;
-    VcsGit  *_git;
-    LinuxSignal  *_linuxSignal;
+    ArnDiscoverAdvertise*  _discoverAdvert;
+    ArnServer*  _server;
+    ArnPersist*  _persist;
+    VcsGit*  _git;
+    LinuxSignal*  _linuxSignal;
     QTimer  _archiveTimer;
 };
 
