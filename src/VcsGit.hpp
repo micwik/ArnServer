@@ -39,8 +39,8 @@
 #ifndef VCSGIT_HPP
 #define VCSGIT_HPP
 
-#include <ArnPersist.hpp>
-#include <ArnLink.hpp>
+#include <ArnInc/ArnPersist.hpp>
+#include <ArnInc/ArnDefs.hpp>
 #include <QProcess>
 
 
@@ -95,7 +95,7 @@ private slots:
 
 private:
     void  addFiles( QStringList relFiles);
-    void  convertFileList( QStringList& files, ArnLink::NameF nameF);
+    void  convertFileList( QStringList& files, Arn::NameF nameF);
 };
 
 #endif // VCSGIT_HPP

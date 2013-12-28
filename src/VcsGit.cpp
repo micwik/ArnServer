@@ -63,7 +63,7 @@ VcsGit::VcsGit( QObject* parent) :
 
 void  VcsGit::commit( QString commitMsg, QStringList files, QString name, QString email)
 {
-    convertFileList( files, ArnLink::NameF::Relative);  // Enforce relative paths
+    convertFileList( files, Arn::NameF::Relative);  // Enforce relative paths
 
     emit notify("Adding files");
     // emit progress(0,"Adding files");
@@ -132,7 +132,7 @@ void  VcsGit::files( QString ref)
     // emit progress(50);
 
     QStringList  replyFiles = QString::fromUtf8(files).split('\n', QString::SkipEmptyParts);
-    convertFileList( replyFiles, ArnLink::NameF::EmptyOk);
+    convertFileList( replyFiles, Arn::NameF::EmptyOk);
 
     emit filesR( replyFiles);
 
@@ -201,7 +201,7 @@ void  VcsGit::status()
 
 void  VcsGit::checkout( QString ref, QStringList files)
 {
-    convertFileList( files, ArnLink::NameF::Relative);  // Enforce relative paths
+    convertFileList( files, Arn::NameF::Relative);  // Enforce relative paths
 
     QStringList  args;
 
@@ -258,7 +258,7 @@ void   VcsGit::log( int numLog)
 
 void  VcsGit::diff( QString ref, QStringList files)
 {
-    convertFileList( files, ArnLink::NameF::Relative);  // Enforce relative paths
+    convertFileList( files, Arn::NameF::Relative);  // Enforce relative paths
 
     QStringList  args;
 
@@ -351,7 +351,7 @@ void  VcsGit::addFiles( QStringList relFiles)
 }
 
 
-void  VcsGit::convertFileList( QStringList &files, ArnLink::NameF nameF)
+void  VcsGit::convertFileList( QStringList &files, Arn::NameF nameF)
 {
     for (int i = 0; i < files.size(); ++i) {
         files[i] = ArnM::convertPath( files.at(i), nameF);

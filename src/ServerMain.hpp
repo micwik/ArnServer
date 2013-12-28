@@ -35,10 +35,10 @@
 
 #include "LinuxSignal.hpp"
 #include "VcsGit.hpp"
-#include <Arn.hpp>
-#include <ArnDiscover.hpp>
-#include <ArnPersist.hpp>
-#include <ArnServer.hpp>
+#include <ArnInc/Arn.hpp>
+#include <ArnInc/ArnDiscover.hpp>
+#include <ArnInc/ArnPersist.hpp>
+#include <ArnInc/ArnServer.hpp>
 #include <QTimer>
 #include <QObject>
 
