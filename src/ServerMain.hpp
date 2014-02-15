@@ -36,7 +36,7 @@
 #include "LinuxSignal.hpp"
 #include "VcsGit.hpp"
 #include <ArnInc/Arn.hpp>
-#include <ArnInc/ArnDiscover.hpp>
+#include <ArnInc/ArnDiscoverRemote.hpp>
 #include <ArnInc/ArnPersist.hpp>
 #include <ArnInc/ArnServer.hpp>
 #include <QTimer>
@@ -60,7 +60,8 @@ private slots:
     void  doAboutToQuit();
 
 private:
-    ArnDiscoverAdvertise*  _discoverAdvert;
+    ArnDiscoverRemote*  _discoverRemote;
+    // ArnDiscoverAdvertise*  _discoverRemote;
     ArnServer*  _server;
     ArnPersist*  _persist;
     VcsGit*  _git;

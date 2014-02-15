@@ -29,7 +29,7 @@ INCLUDEPATH += src $$PWD/../include
 
 ArnLibCompile {
     ARN += server
-    ARN += zeroconf
+    ARN += discover
     CONFIG += mDnsIntern
     include(../ArnLib/src/ArnLib.pri)
     INCLUDEPATH += $$PWD/../ArnLib/src

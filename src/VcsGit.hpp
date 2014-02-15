@@ -40,7 +40,6 @@
 #define VCSGIT_HPP
 
 #include <ArnInc/ArnPersist.hpp>
-#include <ArnInc/ArnDefs.hpp>
 #include <QProcess>
 
 

@@ -66,7 +66,7 @@ ServerMain::ServerMain( QObject* parent) :
 
     /// Error log from Arn system
     ArnM::setConsoleError( false);
-    connect( &ArnM::getInstance(), SIGNAL(errorLogSig(QString,uint,void*)),
+    connect( &ArnM::instance(), SIGNAL(errorLogSig(QString,uint,void*)),
              this, SLOT(errorLog(QString)));
 
     QCoreApplication*  app = QCoreApplication::instance();
@@ -82,8 +82,10 @@ ServerMain::ServerMain( QObject* parent) :
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->start();
 
-    _discoverAdvert = new ArnDiscoverAdvertise( this);
-    _discoverAdvert->setArnServer( _server);
+    _discoverRemote = new ArnDiscoverRemote( this);
+    _discoverRemote->startUseServer( _server);
+    // _discoverRemote = new ArnDiscoverAdvertise( this);
+    // _discoverRemote->advertiseService( ArnDiscover::Type::Server, "Arn TestService", _server->port());
 
     qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
 
@@ -116,7 +118,7 @@ ServerMain::~ServerMain()
 
 void ServerMain::doShutDown()
 {
-    delete _discoverAdvert;
+    delete _discoverRemote;
     delete _git;
     delete _persist;
     delete _server;

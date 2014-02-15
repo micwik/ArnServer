@@ -354,6 +354,6 @@ void  VcsGit::addFiles( QStringList relFiles)
 void  VcsGit::convertFileList( QStringList &files, Arn::NameF nameF)
 {
     for (int i = 0; i < files.size(); ++i) {
-        files[i] = ArnM::convertPath( files.at(i), nameF);
+        files[i] = Arn::convertPath( files.at(i), nameF);
     }
 }
