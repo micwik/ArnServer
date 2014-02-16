@@ -51,10 +51,10 @@ ServerMain::ServerMain( QObject* parent) :
         qCritical() << QString( QCoreApplication::arguments().at(0) + ": " + optErr->errorMessage()
                        + " in --" + optErr->option()->longOption()
                        + " or -" + optErr->option()->shortOption()
-                       ).toAscii().data();
+                       ).toLatin1().data();
         qCritical() << "Usage options:";
         foreach( QGetOpt::Option opt, gopt.options()) {
-            qCritical() << QString("--" + opt.longOption() + "  -" + opt.shortOption()).toAscii().data();
+            qCritical() << QString("--" + opt.longOption() + "  -" + opt.shortOption()).toLatin1().data();
         }
         exit(1);
     }
