@@ -30,13 +30,19 @@ INCLUDEPATH += src $$PWD/../include
 ArnLibCompile {
     ARN += server
     ARN += discover
-    CONFIG += mDnsIntern
+    #CONFIG += mDnsIntern
     include(../ArnLib/src/ArnLib.pri)
     INCLUDEPATH += $$PWD/../ArnLib/src
 } else {
     win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -lArn
     else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn
     else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn
+}
+
+!mDnsIntern {
+    win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
+    else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
+    else:unix: LIBS += -ldns_sd
 }
 
 
