@@ -35,6 +35,8 @@
 #include <QDebug>
 #include "ServerMain.hpp"
 
+extern const QString  serverVersion = "2.0";
+
 
 int main(int argc, char *argv[])
 {

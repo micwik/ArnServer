@@ -4,6 +4,9 @@
 
 CONFIG += ArnLibCompile
 
+# Usage of internal mDNS code (no external dependency)
+CONFIG += mDnsIntern
+
 QT += network
 TARGET = ArnServer
 CONFIG += console
@@ -11,6 +14,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
+
 SOURCES += src/main.cpp \
     src/ServerMain.cpp \
     src/qgetopt.cpp
@@ -18,6 +22,7 @@ SOURCES += src/main.cpp \
 SOURCES +=  src/LinuxSignal.cpp \
     src/VcsGit.cpp
 }
+
 HEADERS += src/ServerMain.hpp \
     src/qgetopt.h
 !win32 {
@@ -27,6 +32,12 @@ HEADERS += src/LinuxSignal.hpp \
 
 INCLUDEPATH += src $$PWD/../include
 
+greaterThan(QT_MAJOR_VERSION, 4) {
+    ARNLIB = Arn5
+} else {
+    ARNLIB = Arn4
+}
+
 ArnLibCompile {
     ARN += server
     ARN += discover
@@ -34,9 +45,9 @@ ArnLibCompile {
     include(../ArnLib/src/ArnLib.pri)
     INCLUDEPATH += $$PWD/../ArnLib/src
 } else {
-    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -lArn
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn
-    else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -l$${ARNLIB}
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -l$${ARNLIB}
+    else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -l$${ARNLIB}
 }
 
 !mDnsIntern {

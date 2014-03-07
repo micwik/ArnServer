@@ -36,6 +36,8 @@
 #include <QCoreApplication>
 #include <QDebug>
 
+extern const QString  serverVersion;
+
 
 ServerMain::ServerMain( QObject* parent) :
     QObject( parent)
@@ -43,8 +45,12 @@ ServerMain::ServerMain( QObject* parent) :
     QDir dataDir = QDir::currentPath();  // Default
     QGetOpt gopt;
 
-    QGetOpt::Option  optDataDir( 'd', "datadir",  1, 1);
+    QGetOpt::Option  optDataDir( 'd', "datadir", 1, 1);
     gopt.addOption( optDataDir);
+
+    QGetOpt::Option  optZeroConfGroups( 'g', "zeroconf-groups", 1);
+    gopt.addOption( optZeroConfGroups);
+
     gopt.parse();
     if (!gopt.check()) {
         const QGetOpt::Error*  optErr = gopt.lastError();
@@ -62,6 +68,12 @@ ServerMain::ServerMain( QObject* parent) :
     if (gopt.update( optDataDir).isUsed()) {
         qDebug() << "DataDir: used=" << optDataDir.isUsed() << " values=" << optDataDir.values();
         dataDir.setPath( optDataDir.value());
+    }
+
+    QStringList  zeroConfGroups;
+    if (gopt.update( optZeroConfGroups).isUsed()) {
+        qDebug() << "ZeroConfGroups: used=" << optZeroConfGroups.isUsed() << " values=" << optZeroConfGroups.values();
+        zeroConfGroups = optZeroConfGroups.values();
     }
 
     /// Error log from Arn system
@@ -83,9 +95,10 @@ ServerMain::ServerMain( QObject* parent) :
     _server->start();
 
     _discoverRemote = new ArnDiscoverRemote( this);
+    _discoverRemote->setDefaultService("Arn Server");
+    _discoverRemote->setGroups( zeroConfGroups);
+    _discoverRemote->addCustomProperty("ServerVers", serverVersion);
     _discoverRemote->startUseServer( _server);
-    // _discoverRemote = new ArnDiscoverAdvertise( this);
-    // _discoverRemote->advertiseService( ArnDiscover::Type::Server, "Arn TestService", _server->port());
 
     qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
 
