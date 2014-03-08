@@ -45,11 +45,14 @@ ServerMain::ServerMain( QObject* parent) :
     QDir dataDir = QDir::currentPath();  // Default
     QGetOpt gopt;
 
-    QGetOpt::Option  optDataDir( 'd', "datadir", 1, 1);
+    QGetOpt::Option  optDataDir( 'd', "datadir", 0, 1);
     gopt.addOption( optDataDir);
 
     QGetOpt::Option  optZeroConfGroups( 'g', "zeroconf-groups", 1);
     gopt.addOption( optZeroConfGroups);
+
+    QGetOpt::Option  optZeroConfService( 's', "zeroconf-service", 1, 1);
+    gopt.addOption( optZeroConfService);
 
     gopt.parse();
     if (!gopt.check()) {
@@ -65,8 +68,10 @@ ServerMain::ServerMain( QObject* parent) :
         exit(1);
     }
 
+    bool  usePersist = true;  // Default
     if (gopt.update( optDataDir).isUsed()) {
-        qDebug() << "DataDir: used=" << optDataDir.isUsed() << " values=" << optDataDir.values();
+        qDebug() << "DataDir: used=" << optDataDir.isUsed() << " value=" << optDataDir.value();
+        usePersist = !optDataDir.value().isEmpty();
         dataDir.setPath( optDataDir.value());
     }
 
@@ -76,11 +81,18 @@ ServerMain::ServerMain( QObject* parent) :
         zeroConfGroups = optZeroConfGroups.values();
     }
 
-    /// Error log from Arn system
+    QString  zeroConfService;
+    if (gopt.update( optZeroConfService).isUsed()) {
+        qDebug() << "ZeroConfService: used=" << optZeroConfService.isUsed() << " values=" << optZeroConfService.values();
+        zeroConfService = optZeroConfService.value();
+    }
+
+    //// Error log from Arn system
     ArnM::setConsoleError( false);
     connect( &ArnM::instance(), SIGNAL(errorLogSig(QString,uint,void*)),
              this, SLOT(errorLog(QString)));
 
+    //// Handle abort signals
     QCoreApplication*  app = QCoreApplication::instance();
 #ifndef WIN32
     _linuxSignal = new LinuxSignal( this);
@@ -94,33 +106,44 @@ ServerMain::ServerMain( QObject* parent) :
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->start();
 
+    //// Setuo discover remote advertise
     _discoverRemote = new ArnDiscoverRemote( this);
     _discoverRemote->setDefaultService("Arn Server");
+    _discoverRemote->setInitialServiceTimeout(0);  // Don't expect initial delayed service name
+    _discoverRemote->setService( zeroConfService);
     _discoverRemote->setGroups( zeroConfGroups);
     _discoverRemote->addCustomProperty("ServerVers", serverVersion);
     _discoverRemote->startUseServer( _server);
 
-    qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
+    //// Setup persistent
+    if (usePersist) {
+        qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
+        qDebug() << "Persist dbPath=" << dataDir.absoluteFilePath("persist.db");
 
-    _persist = new ArnPersist( this);
-    qDebug() << "Persist dbPath=" << dataDir.absoluteFilePath("persist.db");
-    _persist->setupDataBase( dataDir.absoluteFilePath("persist.db"));
-    _persist->setArchiveDir( dataDir.absoluteFilePath("archive"));
-    _persist->setPersistDir( dataDir.absoluteFilePath("persist"));
-    _persist->setMountPoint("/");
+        _persist = new ArnPersist( this);
+        _persist->setupDataBase( dataDir.absoluteFilePath("persist.db"));
+        _persist->setArchiveDir( dataDir.absoluteFilePath("archive"));
+        _persist->setPersistDir( dataDir.absoluteFilePath("persist"));
+        _persist->setMountPoint("/");
+    }
+    else
+        _persist = 0;
 
+    //// Setup version control system
 #ifndef WIN32
     _git = new VcsGit( this);
     _git->setGitExePath("/usr/bin/git");
     // _git->setUserSettings("Arn Magnusson", "arn.magnusson@arnnas.se");
     _git->setWorkingDir(dataDir.absoluteFilePath("persist"));
-    _persist->setVcs( _git);
 #else
     _git = 0;
 #endif
 
-    _archiveTimer.start(24 * 3600 * 1000);
-    connect( &_archiveTimer, SIGNAL(timeout()), _persist, SLOT(doArchive()));
+    if (usePersist) {
+        _persist->setVcs( _git);
+        _archiveTimer.start(24 * 3600 * 1000);
+        connect( &_archiveTimer, SIGNAL(timeout()), _persist, SLOT(doArchive()));
+    }
 }
 
 
