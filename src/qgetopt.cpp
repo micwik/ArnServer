@@ -2,7 +2,7 @@
 // Licence LGPL
 // http://code.google.com/p/qtgetopt/
 //
-// Modified by Michael Wiklund
+// Modified 2014 by Michael Wiklund
 //
 
 #include "qgetopt.h"
