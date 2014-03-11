@@ -154,12 +154,9 @@ ServerMain::~ServerMain()
 
 void ServerMain::doShutDown()
 {
-    delete _discoverRemote;
-    delete _git;
-    delete _persist;
-    delete _server;
+    if (_discoverRemote)  delete _discoverRemote;  // Must be deleted while still in the main eventloop
 
-    QCoreApplication::instance()->quit();
+    QCoreApplication::quit();
 }
 
 
