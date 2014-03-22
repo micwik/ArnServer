@@ -30,9 +30,13 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include <QtGui/QApplication>
 #include <QDir>
 #include <QDebug>
+#if QT_VERSION >= 0x050000
+#  include <QtGui/QGuiApplication>
+#else
+#  include <QtGui/QApplication>
+#endif
 #include "ServerMain.hpp"
 
 extern const QString  serverVersion = "2.0";
@@ -40,8 +44,11 @@ extern const QString  serverVersion = "2.0";
 
 int main(int argc, char *argv[])
 {
-    // QCoreApplication a(argc, argv);
+#if QT_VERSION >= 0x050000
+    QGuiApplication a(argc, argv);
+#else
     QApplication a(argc, argv, false);
+#endif
 
     qDebug() << "Starting Arn Server ...";
     qDebug() << "CWD=" << QDir::currentPath();
