@@ -46,30 +46,33 @@
 
 
       <section id="main_content">
-        <pre><code>Copyright (C) 2010-2013 Michael Wiklund.
+        <pre><code>Copyright (C) 2010-2014 Michael Wiklund.
 All rights reserved.
 Contact: arnlib@wiklunden.se
 </code></pre>
 
-<h1>ArnServer - Active Registry Network Server.</h1>
+<h1>
+<a name="arnserver---active-registry-network-server" class="anchor" href="#arnserver---active-registry-network-server"><span class="octicon octicon-link"></span></a>ArnServer - Active Registry Network Server.</h1>
 
 <p>This Qt and ArnLib based program implements a generic Arn Server.
-When this neutral server is used as is, all custom Arn Data Objects are created in the
+When this opague server is used <em>as is</em>, all custom Arn Data Objects are created in the
 connecting clients as well as all custom logic.
 The server then only works as a central connection point and provides some general
 services like <em>Persistance</em>.</p>
 
 <p><a href="https://github.com/micwik/ArnServer/wiki/Home">ArnServer wiki</a></p>
 
-<h2>Main features</h2>
+<h2>
+<a name="main-features" class="anchor" href="#main-features"><span class="octicon octicon-link"></span></a>Main features</h2>
 
 <ul>
 <li><p>Based on QT, multiple platform and OS support.</p></li>
-<li><p>Arn Server central connection point. Neutral without custom objects or logic.</p></li>
+<li><p>Arn Server central connection point. Opague without custom objects or logic.</p></li>
 <li><p>Persistent storage of objects in SQLight and in files.</p></li>
 <li><p>Version Control System (VCS) using <em>git</em> for objects stored in files.</p></li>
 <li><p>Automatic archiving of SQLight DB each 24 hour.</p></li>
 <li><p>Linux signal (HUP, TERM, INT) handling.</p></li>
+<li><p>ZeroConf advertising of the server.</p></li>
 </ul>
       </section>
 
