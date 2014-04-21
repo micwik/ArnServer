@@ -30,6 +30,10 @@ HEADERS += src/LinuxSignal.hpp \
     src/VcsGit.hpp
 }
 
+OTHER_FILES += \
+    README.md \
+    Install.md
+
 INCLUDEPATH += src $$PWD/../include
 
 greaterThan(QT_MAJOR_VERSION, 4) {
@@ -41,7 +45,6 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 ArnLibCompile {
     ARN += server
     ARN += discover
-    #CONFIG += mDnsIntern
     include(../ArnLib/src/ArnLib.pri)
     INCLUDEPATH += $$PWD/../ArnLib/src
 } else {
@@ -64,6 +67,3 @@ target.path = $$OUT_PWD/../lib
 target.path = /usr/local/house
 }
 INSTALLS += target
-
-OTHER_FILES += \
-    README.md

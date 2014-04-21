@@ -26,19 +26,32 @@ The configuration in ArnServer.pro will give a starting point.
 It works well when using the same base directory for ArnLib as the application,
 e.g. basedir/ArnLib and basedir/ArnServer. 
 
+It's possible to include the ArnLib source in the ArnBrowser compiling by adding
+ArnLibCompile to CONFIG.
+
+Internal mDNS (ZeroConfig) is selected by adding mDnsIntern to CONFIG.
+
+    CONFIG += ArnLibCompile
+    CONFIG += mDnsIntern
+
+
 ### A) Unix 
 
 > qmake <Br>
 > make <Br>
 
 Regarding ArnLib, the easiest way is to let it be placed in a standard location 
-for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.
+for librarys and includes, e.g. /usr/lib and /usr/include/ArnInc.
 
 When using a shared library it's path has to be known to 
 the run-time linker of your operating system. On Linux systems read
-"man ldconfig" ( or google for it ). Another option is to use
+"man ldconfig"  (or google for it). Another option is to use
 the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX
 it is called DYLD_LIBRARY_PATH) environment variable.
+
+If you only want to check the ArnServer without installing ArnLib,
+you can set the LD_LIBRARY_PATH to the lib directory of your local build ArnLib.
+it's also possible to compile the sources together by ArnLibCompile (see above).
 
 
 ### B) Win32/MSVC 
@@ -105,18 +118,21 @@ Using ArnServer
 The program has the following command line parameters:
 
 > **--datadir=** is the basedir for storing persistent data and archive. <Br>
+> **--zeroconf-groups** are the advertised groups used for ZeroConfig filtering. <Br>
+> **--zeroconf-service=** is the advertised service name. <Br>
 
 Example invocation:
 
-    ./ArnServer --datadir=/usr/local/house/data
+    ./ArnServer --datadir=/usr/local/house/data --zeroconf-groups my.com my.com/House
 
 The datadir will be used as below:
 > persist.db <Br>
 > persist/ <Br>
 > archive/ <Br>
 
-Use _persist_template.db_ as an initial _persist.db_.
- 
+ZeroConfig service name can be persistent set remotely using ArnBrowser at Arn path
+"/Local/Sys/Discover/This/Service/value".
+
 ArnServer is assumed to run in a non graphical environment.
 <Br><Br>
 
