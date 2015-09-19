@@ -42,6 +42,8 @@
 #include <QTimer>
 #include <QObject>
 
+class QDir;
+
 
 class ServerMain : public QObject
 {
@@ -60,6 +62,8 @@ private slots:
     void  doAboutToQuit();
 
 private:
+    void  setupConfig( const QDir& configDir);
+
     ArnDiscoverRemote*  _discoverRemote;
     // ArnDiscoverAdvertise*  _discoverRemote;
     ArnServer*  _server;

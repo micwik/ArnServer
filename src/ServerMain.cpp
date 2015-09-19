@@ -32,8 +32,11 @@
 
 #include "ServerMain.hpp"
 #include "qgetopt.h"
+#include <ArnInc/Arn.hpp>
 #include <QDir>
+#include <QFile>
 #include <QCoreApplication>
+#include <QStringList>
 #include <QDebug>
 
 extern const QString  serverVersion;
@@ -42,8 +45,13 @@ extern const QString  serverVersion;
 ServerMain::ServerMain( QObject* parent) :
     QObject( parent)
 {
-    QDir dataDir = QDir::currentPath();  // Default
+    QDir  dataDir   = QDir::current();  // Default
+    QDir  configDir = QDir::current();
+    configDir.cd("config");
     QGetOpt gopt;
+
+    QGetOpt::Option  optConfigDir( 'c', "configdir", 0, 1);
+    gopt.addOption( optConfigDir);
 
     QGetOpt::Option  optDataDir( 'd', "datadir", 0, 1);
     gopt.addOption( optDataDir);
@@ -66,6 +74,11 @@ ServerMain::ServerMain( QObject* parent) :
             qCritical() << QString("--" + opt.longOption() + "  -" + opt.shortOption()).toLatin1().data();
         }
         exit(1);
+    }
+
+    if (gopt.update( optConfigDir).isUsed()) {
+        qDebug() << "ConfigDir: used=" << optConfigDir.isUsed() << " value=" << optConfigDir.value();
+        configDir.setPath( optConfigDir.value());
     }
 
     bool  usePersist = true;  // Default
@@ -104,6 +117,8 @@ ServerMain::ServerMain( QObject* parent) :
     connect( app, SIGNAL(aboutToQuit()), this, SLOT(doAboutToQuit()));
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
+    qDebug() << "Config path=" << configDir.absolutePath();
+    setupConfig( configDir);
     _server->start();
 
     //// Setuo discover remote advertise
@@ -163,6 +178,36 @@ void ServerMain::doShutDown()
 void  ServerMain::doAboutToQuit()
 {
     qDebug() << "About to Quit !!!";
+}
+
+
+void  ServerMain::setupConfig( const QDir& configDir)
+{
+    QFile  file( configDir.absoluteFilePath("arnserver.secrets"));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine().trimmed();
+        if (line.startsWith("#"))  continue;
+
+        QStringList  userPwAllow = QString::fromUtf8( line.constData(), line.size()).split(":");
+        if (userPwAllow.size() != 3)  continue;
+
+        Arn::Allow  allow;
+        QStringList  allowList = userPwAllow.at(2).split(",");
+        foreach (QString allowStr, allowList) {
+            allowStr = allowStr.toLower().trimmed();
+            if (allowStr == "read")    allow.set( allow.Read);
+            if (allowStr == "write")   allow.set( allow.Write);
+            if (allowStr == "delete")  allow.set( allow.Delete);
+            if (allowStr == "all")     allow.set( allow.All);
+        }
+
+        qDebug() << "Server add access: user=" << userPwAllow.at(0) << " pass=" << userPwAllow.at(1)
+                 << " allow=" << allow.toInt();
+        _server->addAccess( userPwAllow.at(0), userPwAllow.at(1), allow);
+    }
 }
 
 
