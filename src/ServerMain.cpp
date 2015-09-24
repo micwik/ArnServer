@@ -117,6 +117,7 @@ ServerMain::ServerMain( QObject* parent) :
     connect( app, SIGNAL(aboutToQuit()), this, SLOT(doAboutToQuit()));
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
+    _server->setDemandLogin( true);
     qDebug() << "Config path=" << configDir.absolutePath();
     setupConfig( configDir);
     _server->start();
@@ -204,8 +205,8 @@ void  ServerMain::setupConfig( const QDir& configDir)
             if (allowStr == "all")     allow.set( allow.All);
         }
 
-        qDebug() << "Server add access: user=" << userPwAllow.at(0) << " pass=" << userPwAllow.at(1)
-                 << " allow=" << allow.toInt();
+        // qDebug() << "Server add access: user=" << userPwAllow.at(0) << " pass=" << userPwAllow.at(1)
+        //          << " allow=" << allow.toInt();
         _server->addAccess( userPwAllow.at(0), userPwAllow.at(1), allow);
     }
 }
