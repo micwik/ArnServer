@@ -32,7 +32,8 @@ HEADERS += src/LinuxSignal.hpp \
 
 OTHER_FILES += \
     README.md \
-    Install.md
+    Install.md \
+    config/arnserver.secrets
 
 INCLUDEPATH += src $$PWD/../include
 

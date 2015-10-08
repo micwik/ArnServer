@@ -201,7 +201,9 @@ void  ServerMain::setupConfig( const QDir& configDir)
             allowStr = allowStr.toLower().trimmed();
             if (allowStr == "read")    allow.set( allow.Read);
             if (allowStr == "write")   allow.set( allow.Write);
+            if (allowStr == "create")  allow.set( allow.Create);
             if (allowStr == "delete")  allow.set( allow.Delete);
+            if (allowStr == "mode")    allow.set( allow.ModeChg);
             if (allowStr == "all")     allow.set( allow.All);
         }
 
