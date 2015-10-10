@@ -62,6 +62,9 @@ ServerMain::ServerMain( QObject* parent) :
     QGetOpt::Option  optZeroConfService( 's', "zeroconf-service", 1, 1);
     gopt.addOption( optZeroConfService);
 
+    QGetOpt::Option  optLoginFreeNet( 'f', "login-freenets", 1);
+    gopt.addOption( optLoginFreeNet);
+
     gopt.parse();
     if (!gopt.check()) {
         const QGetOpt::Error*  optErr = gopt.lastError();
@@ -100,6 +103,12 @@ ServerMain::ServerMain( QObject* parent) :
         zeroConfService = optZeroConfService.value();
     }
 
+    QStringList  noLoginNets;
+    if (gopt.update( optLoginFreeNet).isUsed()) {
+        qDebug() << "LoginFreeNet: used=" << optLoginFreeNet.isUsed() << " values=" << optLoginFreeNet.values();
+        noLoginNets = optLoginFreeNet.values();
+    }
+
     //// Error log from Arn system
     ArnM::setConsoleError( false);
     connect( &ArnM::instance(), SIGNAL(errorLogSig(QString,uint,void*)),
@@ -118,6 +127,7 @@ ServerMain::ServerMain( QObject* parent) :
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->setDemandLogin( true);
+    _server->setNoLoginNets( noLoginNets);
     qDebug() << "Config path=" << configDir.absolutePath();
     setupConfig( configDir);
     _server->start();
@@ -127,7 +137,7 @@ ServerMain::ServerMain( QObject* parent) :
     _discoverRemote->setDefaultService("Arn Server");
     _discoverRemote->setInitialServiceTimeout(0);  // Don't expect initial delayed service name
     _discoverRemote->setService( zeroConfService);
-    _discoverRemote->setGroups( zeroConfGroups);
+    _discoverRemote->setGroups( noLoginNets);
     _discoverRemote->addCustomProperty("ServerVers", serverVersion);
     _discoverRemote->startUseServer( _server);
 
