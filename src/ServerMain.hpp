@@ -39,6 +39,7 @@
 #include <ArnInc/ArnDiscoverRemote.hpp>
 #include <ArnInc/ArnPersist.hpp>
 #include <ArnInc/ArnServer.hpp>
+#include <ArnInc/ArnServerRemote.hpp>
 #include <QTimer>
 #include <QObject>
 
@@ -65,6 +66,7 @@ private:
     void  setupConfig( const QDir& configDir);
 
     ArnDiscoverRemote*  _discoverRemote;
+    ArnServerRemote*  _serverRemote;
     // ArnDiscoverAdvertise*  _discoverRemote;
     ArnServer*  _server;
     ArnPersist*  _persist;

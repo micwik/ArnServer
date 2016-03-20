@@ -141,6 +141,10 @@ ServerMain::ServerMain( QObject* parent) :
     _discoverRemote->addCustomProperty("ServerVers", serverVersion);
     _discoverRemote->startUseServer( _server);
 
+    //// Setuo server remote
+    _serverRemote = new ArnServerRemote( this);
+    _serverRemote->startUseServer( _server);
+
     //// Setup persistent
     if (usePersist) {
         qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
