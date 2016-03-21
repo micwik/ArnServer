@@ -217,7 +217,7 @@ void  ServerMain::setupConfig( const QDir& configDir)
             if (allowStr == "write")   allow.set( allow.Write);
             if (allowStr == "create")  allow.set( allow.Create);
             if (allowStr == "delete")  allow.set( allow.Delete);
-            if (allowStr == "mode")    allow.set( allow.ModeChg);
+            if (allowStr == "mode")    allow.set( allow.ModeChange);
             if (allowStr == "all")     allow.set( allow.All);
         }
 
