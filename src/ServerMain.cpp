@@ -197,7 +197,13 @@ ServerMain::~ServerMain()
 
 void ServerMain::doShutDown()
 {
-    if (_discoverRemote)  delete _discoverRemote;  // Must be deleted while still in the main eventloop
+    if (_persist) {
+        _persist->flush();
+        qDebug() << "Pending persistent values flushed (saved)";
+    }
+
+    if (_discoverRemote)
+        delete _discoverRemote;  // Must be deleted while still in the main eventloop
 
     QCoreApplication::quit();
 }
