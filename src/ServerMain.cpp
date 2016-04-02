@@ -65,6 +65,9 @@ ServerMain::ServerMain( QObject* parent) :
     QGetOpt::Option  optLoginFreeNet( 'f', "login-freenets", 1);
     gopt.addOption( optLoginFreeNet);
 
+    QGetOpt::Option  optRemoteOff( 'r', "remote-off");
+    gopt.addOption( optRemoteOff);
+
     gopt.parse();
     if (!gopt.check()) {
         const QGetOpt::Error*  optErr = gopt.lastError();
@@ -109,6 +112,12 @@ ServerMain::ServerMain( QObject* parent) :
         noLoginNets = optLoginFreeNet.values();
     }
 
+    bool  useRemote = true;  // Default
+    if (gopt.update( optRemoteOff).isUsed()) {
+        qDebug() << "RemoteOff: Remote server feature not used";
+        useRemote = false;
+    }
+
     //// Error log from Arn system
     ArnM::setConsoleError( false);
     connect( &ArnM::instance(), SIGNAL(errorLogSig(QString,uint,void*)),
@@ -142,9 +151,13 @@ ServerMain::ServerMain( QObject* parent) :
     _discoverRemote->startUseServer( _server);
 
     //// Setuo server remote
-    _serverRemote = new ArnServerRemote( this);
-    _serverRemote->startUseServer( _server);
-
+    if (useRemote) {
+        _serverRemote = new ArnServerRemote( this);
+        _serverRemote->startUseServer( _server);
+    }
+    else {
+        _serverRemote = 0;
+    }
     //// Setup persistent
     if (usePersist) {
         qDebug() << "Persist filePath=" << dataDir.absoluteFilePath("persist");
