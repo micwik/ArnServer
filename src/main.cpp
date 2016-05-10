@@ -39,7 +39,7 @@
 #endif
 #include "ServerMain.hpp"
 
-extern const QString  serverVersion = "2.0";
+extern const QString  serverVersion = "3.0";
 
 
 int main(int argc, char *argv[])
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv, false);
 #endif
 
-    qDebug() << "Starting Arn Server ...";
+    qDebug() << "Starting Arn Server ver: " + serverVersion;
     qDebug() << "CWD=" << QDir::currentPath();
     ServerMain sm;
 
