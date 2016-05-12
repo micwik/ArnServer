@@ -118,17 +118,24 @@ Using ArnServer
 The program has the following command line parameters:
 
 > **--datadir=** is the basedir for storing persistent data and archive. <Br>
+> **--configdir=** is the basedir for storing server configuration. <Br>
 > **--zeroconf-groups** are the advertised groups used for ZeroConfig filtering. <Br>
 > **--zeroconf-service=** is the advertised service name. <Br>
+> **--login-freenets** are the nets free from lolgin. <Br>
+> **--remote-off** turns of remote control of connected client sessions. <Br>
 
 Example invocation:
 
-    ./ArnServer --datadir=/usr/local/house/data --zeroconf-groups my.com my.com/House
+> ./ArnServer --datadir=/usr/local/house/data --zeroconf-groups my.com my.com/House  <Br>
+> ./ArnServer --configdir=/etc/house.d --login-freenets localnet 192.168.1.0/255.255.255.0  <Br>
 
 The datadir will be used as below:
 > persist.db <Br>
 > persist/ <Br>
 > archive/ <Br>
+
+The configdir will be used as below:
+> arnserver.secrets  (template is available in subdir config) <Br>
 
 ZeroConfig service name can be persistent set remotely using ArnBrowser at Arn path
 "/Local/Sys/Discover/This/Service/value".

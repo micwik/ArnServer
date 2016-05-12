@@ -1,4 +1,4 @@
-    Copyright (C) 2010-2014 Michael Wiklund.
+    Copyright (C) 2010-2016 Michael Wiklund.
     All rights reserved.
     Contact: arnlib@wiklunden.se
 
@@ -15,6 +15,7 @@ services like _Persistance_.
 ## Installation and usage
 
 Read [Install.md](Install.md) how to build, install and use.
+This ArnServer depends on ArnLib 3.0 or later.
 <Br><Br>
 
 
@@ -33,3 +34,9 @@ Read [Install.md](Install.md) how to build, install and use.
 * Linux signal (HUP, TERM, INT) handling.
 
 * ZeroConf advertising of the server.
+
+* Remote server, with sessions at "/Local/Sys/Server/Sessions/".
+
+* Login system, with access keys in <configdir>/arnserver.secrets.
+
+* Support nets not needing login.
