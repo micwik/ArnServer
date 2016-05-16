@@ -147,7 +147,7 @@ ServerMain::ServerMain( QObject* parent) :
     _discoverRemote->setDefaultService("Arn Server");
     _discoverRemote->setInitialServiceTimeout(0);  // Don't expect initial delayed service name
     _discoverRemote->setService( zeroConfService);
-    _discoverRemote->setGroups( noLoginNets);
+    _discoverRemote->setGroups( zeroConfGroups);
     _discoverRemote->addCustomProperty("ServerVers", serverVersion);
     _discoverRemote->startUseServer( _server);
 
