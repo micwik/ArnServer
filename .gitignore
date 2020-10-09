@@ -14,6 +14,7 @@
 ArnServer
 persist.db
 persist/
+tmp/
 
 
 # Qt-es
@@ -23,6 +24,7 @@ moc_*.cpp
 qrc_*.cpp
 ui_*.h
 *.log
+.qmake.stash
 Makefile
 Makefile.*
 *-build-*

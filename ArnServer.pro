@@ -65,6 +65,6 @@ ArnLibCompile {
 win32 {
 target.path = $$OUT_PWD/../lib
 } else {
-target.path = /usr/local/house
+target.path = /usr/local/bin
 }
 INSTALLS += target
