@@ -167,7 +167,7 @@ bool QGetOpt::parse()
 
 		if( !exist )
 		{
-			_err->setErrorMessage("Option doesn't exist", Error::notExist);
+            _err->setErrorMessage("Option doesn't exist: " + cur, Error::notExist);
 			return false;
 		}
 	}

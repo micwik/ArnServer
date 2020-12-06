@@ -69,13 +69,22 @@ ServerMain::ServerMain( QObject* parent) :
     QGetOpt::Option  optRemoteOff( 'r', "remote-off");
     gopt.addOption( optRemoteOff);
 
-    gopt.parse();
+    bool optOk = true;
+    if (!gopt.parse()) {
+        optOk = false;
+        const QGetOpt::Error*  optErr = gopt.lastError();
+        qCritical() << QString( QCoreApplication::arguments().at(0) + ": " + optErr->errorMessage()
+                                ).toLatin1().data();
+    }
     if (!gopt.check()) {
+        optOk = false;
         const QGetOpt::Error*  optErr = gopt.lastError();
         qCritical() << QString( QCoreApplication::arguments().at(0) + ": " + optErr->errorMessage()
                        + " in --" + optErr->option()->longOption()
                        + " or -" + optErr->option()->shortOption()
                        ).toLatin1().data();
+    }
+    if (!optOk) {
         qCritical() << "Usage options:";
         foreach( QGetOpt::Option opt, gopt.options()) {
             qCritical() << QString("--" + opt.longOption() + "  -" + opt.shortOption()).toLatin1().data();
