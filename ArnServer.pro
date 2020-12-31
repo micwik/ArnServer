@@ -7,6 +7,8 @@ CONFIG += ArnLibCompile
 # Usage of internal mDNS code (no external dependency)
 CONFIG += mDnsIntern
 
+QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations
+
 QT += network
 TARGET = ArnServer
 CONFIG += console
