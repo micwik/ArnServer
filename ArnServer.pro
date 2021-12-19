@@ -1,11 +1,10 @@
-# -------------------------------------------------
-# Project created by QtCreator 2010-09-23T21:35:29
-# -------------------------------------------------
-
-CONFIG += ArnLibCompile
+# CONFIG += ArnLibCompile
 
 # Usage of internal mDNS code (no external dependency)
-CONFIG += mDnsIntern
+# CONFIG += mDnsIntern
+
+# Usage of float as real type, default is double. Must be same in ArnLib pro-file.
+# DEFINES += ARNREAL_FLOAT
 
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations
 
@@ -14,8 +13,40 @@ TARGET = ArnServer
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-OBJECTS_DIR = tmp
-MOC_DIR = tmp
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+    ARNLIB = Arn5
+} else {
+    ARNLIB = Arn4
+}
+
+UI_DIR = build$$BUILD_POSTFIX
+MOC_DIR = build$$BUILD_POSTFIX
+RCC_DIR = build$$BUILD_POSTFIX
+OBJECTS_DIR = build$$BUILD_POSTFIX
+# DESTDIR = deploy$$BUILD_POSTFIX
+
+ArnLibCompile {
+    ARN += server
+    ARN += discover
+    include(../ArnLib/src/ArnLib.pri)
+    INCLUDEPATH += $$PWD/../ArnLib/src
+} else {
+    #INCLUDEPATH += $$PWD/../ArnLib/src
+    #QMAKE_RPATHDIR += $$OUT_PWD/../ArnLib/$$DESTDIR
+
+    #win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/$$DESTDIR -l$${ARNLIB}
+    #else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/$$DESTDIR -l$${ARNLIB}
+    #else:unix: LIBS += -L$$OUT_PWD/../ArnLib/$$DESTDIR -l$${ARNLIB}
+
+    LIBS += -l$${ARNLIB}
+}
+
+!mDnsIntern {
+    win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
+    else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
+    else:unix: LIBS += -ldns_sd
+}
 
 SOURCES += src/main.cpp \
     src/ServerMain.cpp \
@@ -37,30 +68,7 @@ OTHER_FILES += \
     Install.md \
     config/arnserver.secrets
 
-INCLUDEPATH += src $$PWD/../include
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-    ARNLIB = Arn5
-} else {
-    ARNLIB = Arn4
-}
-
-ArnLibCompile {
-    ARN += server
-    ARN += discover
-    include(../ArnLib/src/ArnLib.pri)
-    INCLUDEPATH += $$PWD/../ArnLib/src
-} else {
-    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -l$${ARNLIB}
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -l$${ARNLIB}
-    else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -l$${ARNLIB}
-}
-
-!mDnsIntern {
-    win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
-    else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
-    else:unix: LIBS += -ldns_sd
-}
+# INCLUDEPATH += src $$PWD/../include
 
 
 ### Install
